@@ -1,7 +1,5 @@
 package appstore;
 
-/**
- * Created by jdumay on 7/09/2016.
- */
+// Hello World
 public class Store {
 }
