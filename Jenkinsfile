@@ -1,6 +1,6 @@
-node {
-    /*agent docker:'maven:3.3.3'*/
-    /*stages {*/
+pipeline {
+    agent docker:'maven:3.3.3'
+    stages {
         stage ('Build') {
             sh 'mvn clean source:jar package'
         }
@@ -30,7 +30,7 @@ node {
         stage ('Package') {
             sh 'mvn source:jar package -Dmaven.test.skip'
         }
-    /*}*/
+    }
 
 	
     postBuild {
