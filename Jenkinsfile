@@ -41,7 +41,7 @@ pipeline {
     }
 
 	
-    postBuild {
+    post {
         always {
             junit '**/target/surefire-reports/TEST-*.xml'
             archive '**/target/*.jar'
