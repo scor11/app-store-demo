@@ -1,6 +1,6 @@
 node {
     /*agent docker:'maven:3.3.3'*/
-    /*stages {*/
+    stages {
         stage ('Build') {
             sh 'mvn clean source:jar package'
         }
@@ -30,14 +30,12 @@ node {
         stage ('Package') {
             sh 'mvn source:jar package -Dmaven.test.skip'
         }
-    /*}*/
+    }
 
-	/*
     postBuild {
         always {
             junit '**/target/surefire-reports/TEST-*.xml'
             archive '**/target/*.jar'
         }
     }
-	*/
 }
