@@ -2,10 +2,15 @@ pipeline {
     agent docker:'maven:3.3.3'
     stages {
         stage ('Build') {
-			steps{
-				sh 'mvn clean source:jar package'
-			}
+            steps{
+               configFileProvider(
+                    [configFile(fileId: '327fa783-20f9-453c-8e5d-6404ee8c8ba8', variable: 'MAVEN_SETTINGS')]) {
+                        sh 'mvn -s $MAVEN_SETTINGS --version'
+            	    	sh 'mvn -s $MAVEN_SETTINGS clean source:jar package'
+	            }
+            } 
         }
+        
         stage ('Browser Tests') {
 			steps{
 				parallel (
@@ -30,12 +35,20 @@ pipeline {
         }
         stage ('Static Analysis') {
 			steps{
-				sh 'mvn findbugs:findbugs'
+			    configFileProvider(
+                    [configFile(fileId: '327fa783-20f9-453c-8e5d-6404ee8c8ba8', variable: 'MAVEN_SETTINGS')]) {
+                       	sh 'mvn -s $MAVEN_SETTINGS findbugs:findbugs'
+	            }
+				
 			}
         }
         stage ('Package') {
 			steps{
-				sh 'mvn source:jar package -Dmaven.test.skip'
+			    configFileProvider(
+                    [configFile(fileId: '327fa783-20f9-453c-8e5d-6404ee8c8ba8', variable: 'MAVEN_SETTINGS')]) {
+                       	sh 'mvn -s $MAVEN_SETTINGS source:jar package -Dmaven.test.skip'
+	            }
+				
 			}
         }
     }
